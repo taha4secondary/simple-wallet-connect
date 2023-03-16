@@ -1,24 +1,25 @@
-import { useAccount } from 'wagmi'
+import { Container, Grid, Paper } from "@mui/material";
+import { useAccount } from "wagmi";
 
-import { Account, Connect, NetworkSwitcher } from '../components'
+import { Account, Connect, NetworkSwitcher } from "../components";
+import { Header } from "../components/Header";
 
 function Page() {
-  const { isConnected } = useAccount()
+  const { isConnected } = useAccount();
 
   return (
-    <>
-      <h1>wagmi + Next.js</h1>
+    <Grid container>
+      <Grid item md={6} sm={12} p={2}>
+        <Paper className="main-container">
+          <Header />
 
-      <Connect />
+          <Connect />
 
-      {isConnected && (
-        <>
-          <Account />
-          <NetworkSwitcher />
-        </>
-      )}
-    </>
-  )
+          {isConnected && <Account />}
+        </Paper>
+      </Grid>
+    </Grid>
+  );
 }
 
-export default Page
+export default Page;

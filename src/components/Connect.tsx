@@ -1,31 +1,43 @@
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import LoadingButton from "@mui/lab/LoadingButton";
+import WalletIcon from "@mui/icons-material/Wallet";
+import { Grid } from "@mui/material";
 
 export function Connect() {
-  const { connector, isConnected } = useAccount()
+  const { connector, isConnected } = useAccount();
   const { connect, connectors, error, isLoading, pendingConnector } =
-    useConnect()
-  const { disconnect } = useDisconnect()
+    useConnect();
+  const { disconnect } = useDisconnect();
 
   return (
     <div>
-      <div>
-        {isConnected && (
-          <button onClick={() => disconnect()}>
-            Disconnect from {connector?.name}
-          </button>
+      <Grid container spacing={2}>
+        {isConnected ? (
+          <>
+            <LoadingButton onClick={() => disconnect()} variant="outlined">
+              قطع اتصال با {connector?.name}
+            </LoadingButton>
+          </>
+        ) : (
+          connectors
+            .filter((x) => x.ready && x.id !== connector?.id)
+            .map((x) => (
+              <Grid item sm={12}>
+                <LoadingButton
+                  loading={isLoading && x.id === pendingConnector?.id}
+                  variant="outlined"
+                  key={x.id}
+                  onClick={() => connect({ connector: x })}
+                >
+                  <WalletIcon />
+                  {x.name}
+                </LoadingButton>
+              </Grid>
+            ))
         )}
-
-        {connectors
-          .filter((x) => x.ready && x.id !== connector?.id)
-          .map((x) => (
-            <button key={x.id} onClick={() => connect({ connector: x })}>
-              {x.name}
-              {isLoading && x.id === pendingConnector?.id && ' (connecting)'}
-            </button>
-          ))}
-      </div>
+      </Grid>
 
       {error && <div>{error.message}</div>}
     </div>
-  )
+  );
 }

@@ -1,0 +1,21 @@
+body {
+  direction: rtl;
+  background-color: rgb(50, 50, 77);
+}
+.main-container {
+  position: relative;
+  padding: 8px;
+  overflow: hidden;
+  padding-top: 100px;
+}
+.header {
+  background-color: rgb(83, 83, 119);
+  color: white;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+}
